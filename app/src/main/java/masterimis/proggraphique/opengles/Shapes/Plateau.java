@@ -55,7 +55,6 @@ public class Plateau {
      */
     public void randomized() {
         this.updateContent(this.mRenderer.getShape());
-        float[] posNull = this.getPosEmpty();
         for (int ligne = 0; ligne < this.plateau.size(); ligne++) {
             for (int elem = 0; elem < this.plateau.get(ligne).size(); elem++) {
                 if (ligne > 0){
@@ -87,7 +86,6 @@ public class Plateau {
                     if(this.plateau.get(ligne).get(elem + 1) == null){
                         //Change avec voisin de gauche
                         this.echange(ligne, elem, ligne, elem + 1);
-
                         return;
                     }
                 }
@@ -100,6 +98,5 @@ public class Plateau {
         shapeADeplacer.setPosition(new float[]{x, y}); //Changement de la pos de la shape
         this.plateau.get(x).set(y, shapeADeplacer);
         this.plateau.get(xShape).set(yShape, null);
-        this.mRenderer.echange(this.plateau);
     }
 }

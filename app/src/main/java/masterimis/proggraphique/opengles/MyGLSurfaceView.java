@@ -65,11 +65,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
         float screen_x = getWidth();
         float screen_y = getHeight();
 
-        if (!isRandomized){
-            this.plateau.updateContent(mRenderer.getShape());
-        }
-
-
         // Des messages si nécessaires */
         Log.d("message", "x"+Float.toString(x));
         Log.d("message", "y"+Float.toString(y));
@@ -96,8 +91,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
         /* Le carré représenté a une arête de 2 (oui il va falloir changer cette valeur en dur !!)
         /* On teste si le point touché appartient au carré ou pas car on ne doit le déplacer que si ce point est dans le carré
         */
-        Log.d("abricot","null at : "+ this.plateau.getPosEmpty()[0] + "," +  this.plateau.getPosEmpty()[1]);
-
 //       boolean test_square = ((x_opengl < pos[0]+1.0) && (x_opengl > pos[0]-1.0) && (y_opengl < pos[1]+1.0) && (y_opengl > pos[1]-1.0));
 
 //        Log.d("message","test_square="+Boolean.toString(test_square));
@@ -111,7 +104,6 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 this.isRandomized = true;
                 Log.d("abricot","null at : "+ this.plateau.getPosEmpty()[0] + "," +  this.plateau.getPosEmpty()[1]);
                 requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
-
             }
         }
 //        switch (e.getAction()) {

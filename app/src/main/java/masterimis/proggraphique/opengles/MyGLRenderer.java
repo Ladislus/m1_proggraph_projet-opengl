@@ -36,7 +36,7 @@ import masterimis.proggraphique.opengles.Shapes.Triangle;
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
-    private ArrayList<Shape> mSquare = new ArrayList<>();
+    private ArrayList<Shape> shapes = new ArrayList<>();
 
 
     // Les matrices habituelles Model/View/Projection
@@ -52,7 +52,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private ArrayList<Color> mSquareColors = new ArrayList<>();
 
     public ArrayList<Shape> getShape() {
-        return mSquare;
+        return shapes;
     }
 
     /* Première méthode équivalente à la fonction init en OpenGLSL */
@@ -68,16 +68,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         /* on va définir une classe Square pour dessiner des carrés */
-        mSquare.add(new Square(new float[]{-1.0f, 1.0f}, mSquareColors.get(0)));
-        mSquare.add(new Square(new float[]{-1.0f + 1, 1.0f}, mSquareColors.get(1)));
-        mSquare.add(new Square(new float[]{-1.0f + 2, 1.0f}, mSquareColors.get(2)));
+        shapes.add(new Square(new float[]{-1.0f, 1.0f}, mSquareColors.get(0)));
+        shapes.add(new Square(new float[]{-1.0f + 1, 1.0f}, mSquareColors.get(1)));
+        shapes.add(new Square(new float[]{-1.0f + 2, 1.0f}, mSquareColors.get(2)));
 
-        mSquare.add(new Triangle(new float[]{-1.0f, 0.0f}, mSquareColors.get(0)));
-        mSquare.add(new Triangle(new float[]{-1.0f + 1, 0.0f}, mSquareColors.get(1)));
-        mSquare.add(new Triangle(new float[]{-1.0f + 2, 0.0f}, mSquareColors.get(2)));
+        shapes.add(new Triangle(new float[]{-1.0f, 0.0f}, mSquareColors.get(0)));
+        shapes.add(new Triangle(new float[]{-1.0f + 1, 0.0f}, mSquareColors.get(1)));
+        shapes.add(new Triangle(new float[]{-1.0f + 2, 0.0f}, mSquareColors.get(2)));
 
-        mSquare.add(new Losange(new float[]{-1.0f, -1.0f}, mSquareColors.get(0)));
-        mSquare.add(new Losange(new float[]{-1.0f + 1, -1.0f}, mSquareColors.get(1)));
+        shapes.add(new Losange(new float[]{-1.0f, -1.0f}, mSquareColors.get(0)));
+        shapes.add(new Losange(new float[]{-1.0f + 1, -1.0f}, mSquareColors.get(1)));
 
 
     }
@@ -104,17 +104,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         /* scratch est la matrice PxVxM finale */
 
-        for (int i = 0; i < mSquare.size(); i++){
+        for (int i = 0; i < shapes.size(); i++){
             /* on appelle la méthode dessin du carré élémentaire */
 //            float x = (i == 0) ? -3.0f : this.mSquarePosition[0];
 //            x = (i == 3 || i == 6) ? -6.0f : x;
 //            float y = (i == 3 || i == 6) ? -3.0f : 0;
             Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, 0);
 
-            Log.d("Renderer", "mSquare (x,y)"+Float.toString(this.mSquare.get(i).getPosition()[0])+","+Float.toString(this.mSquare.get(i).getPosition()[1]));
+            Log.d("Renderer", "mSquare (x,y)"+Float.toString(this.shapes.get(i).getPosition()[0])+","+Float.toString(this.shapes.get(i).getPosition()[1]));
 
             Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
-            mSquare.get(i).draw(scratch);
+            shapes.get(i).draw(scratch);
 
         }
 
@@ -166,14 +166,4 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return mSquarePosition;
     }
 
-    public void echange(ArrayList<ArrayList<Shape>> plateau) {
-        this.mSquare.clear();
-        for (int ligne = 0; ligne < plateau.size(); ligne++) {
-            for (int elem = 0; elem < plateau.get(ligne).size(); elem++) {
-                if (plateau.get(ligne).get(elem) != null){
-                    this.mSquare.add(plateau.get(ligne).get(elem));
-                }
-            }
-        }
-    }
 }
