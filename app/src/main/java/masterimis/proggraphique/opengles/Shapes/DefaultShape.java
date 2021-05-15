@@ -67,30 +67,15 @@ public abstract class DefaultShape implements Shape {
 
     public void draw(float[] mvpMatrix) {
 
-        ///////////////////////////////
-        // Actualisation des buffers //
-        ///////////////////////////////
+        ///////////////////////////////////
+        // Actualisation des coordinates //
+        ///////////////////////////////////
 
-        // Coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(this._coordinates.length * 4);
         bb.order(ByteOrder.nativeOrder());
         this._vertexBuffer = bb.asFloatBuffer();
         this._vertexBuffer.put(this._coordinates);
         this._vertexBuffer.position(0);
-
-        // Couleurs
-        ByteBuffer bc = ByteBuffer.allocateDirect(this._colors.length * 4);
-        bc.order(ByteOrder.nativeOrder());
-        this._colorBuffer = bc.asFloatBuffer();
-        this._colorBuffer.put(this._colors);
-        this._colorBuffer.position(0);
-
-        // Indices
-        ByteBuffer dlb = ByteBuffer.allocateDirect(this._indices.length * 2);
-        dlb.order(ByteOrder.nativeOrder());
-        this._indicesBuffer = dlb.asShortBuffer();
-        this._indicesBuffer.put(this._indices);
-        this._indicesBuffer.position(0);
 
         GLES30.glUniformMatrix4fv(_program.getMvpId(), 1, false, mvpMatrix, 0);
         _program.activate();
