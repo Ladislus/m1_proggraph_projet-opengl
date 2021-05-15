@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package masterimis.proggraphique.opengles;
+package masterimis.proggraphique.opengles.Shapes;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -26,10 +26,12 @@ import android.util.Log;
 //import android.opengl.GLES20;
 import android.opengl.GLES30;
 
+import masterimis.proggraphique.opengles.MyGLRenderer;
+
 
 //Dessiner un carré
 
-public class Square {
+public class Square implements Shape {
 /* Le vertex shader avec la définition de gl_Position et les variables utiles au fragment shader
  */
     private final String vertexShaderCode =
