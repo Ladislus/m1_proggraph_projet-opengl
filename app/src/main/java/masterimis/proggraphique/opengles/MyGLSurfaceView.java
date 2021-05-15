@@ -23,6 +23,7 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
+import masterimis.proggraphique.opengles.Shapes.Plateau;
 import masterimis.proggraphique.opengles.Shapes.Shape;
 
 /* La classe MyGLSurfaceView avec en particulier la gestion des événements
@@ -39,6 +40,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
     private final MyGLRenderer mRenderer;
+    private Plateau plateau;
+    private boolean isRandomized = false;
 
     public MyGLSurfaceView(Context context) {
         super(context);
@@ -49,9 +52,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
         // Création du renderer qui va être lié au conteneur View créé
         mRenderer = new MyGLRenderer();
         setRenderer(mRenderer);
-
         // Option pour indiquer qu'on redessine uniquement si les données changent
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        this.plateau = new Plateau(this.mRenderer);
     }
 
     /* pour gérer la translation */
@@ -70,6 +73,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
         float screen_x = getWidth();
         float screen_y = getHeight();
 
+        if (!isRandomized){
+            this.plateau.updateContent(mRenderer.getShape());
+        }
 
 
         // Des messages si nécessaires */
@@ -98,37 +104,36 @@ public class MyGLSurfaceView extends GLSurfaceView {
         /* Le carré représenté a une arête de 2 (oui il va falloir changer cette valeur en dur !!)
         /* On teste si le point touché appartient au carré ou pas car on ne doit le déplacer que si ce point est dans le carré
         */
+        Log.d("abricot","null at : "+ this.plateau.getPosEmpty()[0] + "," +  this.plateau.getPosEmpty()[1]);
 
-        ArrayList<Shape> mesFormes = mRenderer.getShape();
-        Log.d("message", "Formes (x,y) : ");
+//       boolean test_square = ((x_opengl < pos[0]+1.0) && (x_opengl > pos[0]-1.0) && (y_opengl < pos[1]+1.0) && (y_opengl > pos[1]-1.0));
 
-        for(Shape s : mesFormes){
-            Log.d("message", "Coords (x,y) : "+s.getPosition()[0]+","+s.getPosition()[1]);
-            boolean test_square = ((x_opengl < s.getPosition()[0]+1.0) && (x_opengl > s.getPosition()[0]-1.0) && (y_opengl < s.getPosition()[1]+1.0) && (y_opengl > s.getPosition()[1]-1.0));
-        }
+//        Log.d("message","test_square="+Boolean.toString(test_square));
+//        Log.d("message","condition="+Boolean.toString(condition));
 
-       boolean test_square = ((x_opengl < pos[0]+1.0) && (x_opengl > pos[0]-1.0) && (y_opengl < pos[1]+1.0) && (y_opengl > pos[1]-1.0));
-
-        Log.d("message","test_square="+Boolean.toString(test_square));
-        Log.d("message","condition="+Boolean.toString(condition));
-
-        if (condition || test_square) {
-
+        if(!this.isRandomized){
             switch (e.getAction()) {
-                /* Lorsqu'on touche l'écran on mémorise juste le point */
-                case MotionEvent.ACTION_DOWN:
-                    mPreviousX = x;
-                    mPreviousY = y;
-                    condition=true;
-                    break;
-                case MotionEvent.ACTION_UP:
-                   mRenderer.setPosition(0.0f,-9.0f);
-                    requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
-                    condition=false;
+            /* Lorsqu'on touche l'écran on mémorise juste le point */
+            case MotionEvent.ACTION_UP:
+                this.plateau.randomized();
+                this.isRandomized = true;
+                Log.d("abricot","null at : "+ this.plateau.getPosEmpty()[0] + "," +  this.plateau.getPosEmpty()[1]);
+                requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
 
             }
         }
-
+//        switch (e.getAction()) {
+//            /* Lorsqu'on touche l'écran on mémorise juste le point */
+//            case MotionEvent.ACTION_DOWN:
+//                mPreviousX = x;
+//                mPreviousY = y;
+//                condition=true;
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                mRenderer.setPosition(0.0f,-9.0f);
+//                requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
+//                condition=false;
+//            }
         return true;
     }
 

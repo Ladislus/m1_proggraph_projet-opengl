@@ -84,13 +84,13 @@ public class Square implements Shape {
      Oui ce n'est pas joli avec 1.0 en dur ....
      */
 
-    static float squareCoords[] = {
+    float squareCoords[] = {
             -1.0f,   1.0f, 0.0f,
             -1.0f,  -1.0f, 0.0f,
             1.0f,  -1.0f, 0.0f,
             1.f,  1.f, 0.0f };
 
-    static final float initSquareCoords[] = {
+    final float initSquareCoords[] = {
             -1.0f,   1.0f, 0.0f,
             -1.0f,  -1.0f, 0.0f,
             1.0f,  -1.0f, 0.0f,
@@ -165,7 +165,7 @@ public class Square implements Shape {
 
     }
 
-
+    @Override
     public void set_position(float[] pos) {
         Position[0]=pos[0];
         Position[1]=pos[1];

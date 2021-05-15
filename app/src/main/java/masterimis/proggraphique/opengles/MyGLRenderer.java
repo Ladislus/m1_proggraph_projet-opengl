@@ -68,13 +68,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         /* on va définir une classe Square pour dessiner des carrés */
-        for(int i = 0; i < 3; i++){
-            mSquare.add(new Square(new float[]{-1.0f + i, 1.0f}, mSquareColors.get(i)));
-            mSquare.add(new Triangle(new float[]{-1.0f + i, 0.0f}, mSquareColors.get(i)));
-            if(i < 2){
-                mSquare.add(new Losange(new float[]{-1.0f + i, -1.0f}, mSquareColors.get(i)));
-            }
-        }
+        mSquare.add(new Square(new float[]{-1.0f, 1.0f}, mSquareColors.get(0)));
+        mSquare.add(new Square(new float[]{-1.0f + 1, 1.0f}, mSquareColors.get(1)));
+        mSquare.add(new Square(new float[]{-1.0f + 2, 1.0f}, mSquareColors.get(2)));
+
+        mSquare.add(new Triangle(new float[]{-1.0f, 0.0f}, mSquareColors.get(0)));
+        mSquare.add(new Triangle(new float[]{-1.0f + 1, 0.0f}, mSquareColors.get(1)));
+        mSquare.add(new Triangle(new float[]{-1.0f + 2, 0.0f}, mSquareColors.get(2)));
+
+        mSquare.add(new Losange(new float[]{-1.0f, -1.0f}, mSquareColors.get(0)));
+        mSquare.add(new Losange(new float[]{-1.0f + 1, -1.0f}, mSquareColors.get(1)));
+
+
     }
 
     /* Deuxième méthode équivalente à la fonction Display */
@@ -161,4 +166,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return mSquarePosition;
     }
 
+    public void echange(ArrayList<ArrayList<Shape>> plateau) {
+        this.mSquare.clear();
+        for (int ligne = 0; ligne < plateau.size(); ligne++) {
+            for (int elem = 0; elem < plateau.get(ligne).size(); elem++) {
+                if (plateau.get(ligne).get(elem) != null){
+                    this.mSquare.add(plateau.get(ligne).get(elem));
+                }
+            }
+        }
+    }
 }

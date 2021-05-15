@@ -22,6 +22,7 @@ import java.nio.ShortBuffer;
 
 //import android.opengl.GLES20;
 import android.opengl.GLES30;
+import android.util.Log;
 
 import masterimis.proggraphique.opengles.MyGLRenderer;
 
@@ -80,13 +81,14 @@ public class Triangle implements Shape {
      Oui ce n'est pas joli avec 1.0 en dur ....
      */
 
-    static float squareCoords[] = {
+    float squareCoords[] = {
             0.0f, 1.0f, 1.0f,
             -1.0f, -1.0f, 1.0f,
              1.0f, -1.0f, 1.0f
     };
 
-    static final float initSquareCoords[] = {
+
+    final float initSquareCoords[] = {
             0.0f, 1.0f, 1.0f,
             -1.0f, -1.0f, 1.0f,
             1.0f, -1.0f, 1.0f
@@ -157,14 +159,16 @@ public class Triangle implements Shape {
 
     }
 
-
+    @Override
     public void set_position(float[] pos) {
+        Log.d("abricot", "sex");
         Position[0]=pos[0];
         Position[1]=pos[1];
         for(int i = 0; i < squareCoords.length; i+=3){
             squareCoords[i] = initSquareCoords[i] + (7*pos[0]);
             squareCoords[i+1] = initSquareCoords[i+1] + (7*pos[1]);
         }
+
     }
     /* La fonction Display */
     @Override
