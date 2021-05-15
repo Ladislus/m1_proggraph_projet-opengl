@@ -21,6 +21,8 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import java.util.ArrayList;
+
 /* La classe MyGLSurfaceView avec en particulier la gestion des événements
   et la création de l'objet renderer
 
