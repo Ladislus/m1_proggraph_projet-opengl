@@ -26,14 +26,6 @@ import java.util.ArrayList;
 import masterimis.proggraphique.opengles.Shapes.Plateau;
 import masterimis.proggraphique.opengles.Shapes.Shape;
 
-/* La classe MyGLSurfaceView avec en particulier la gestion des événements
-  et la création de l'objet renderer
-
-*/
-
-
-/* On va dessiner un carré qui peut se déplacer grace à une translation via l'écran tactile */
-
 public class MyGLSurfaceView extends GLSurfaceView {
 
     /* Un attribut : le renderer (GLSurfaceView.Renderer est une interface générique disponible) */

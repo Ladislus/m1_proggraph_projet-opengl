@@ -97,7 +97,7 @@ public class Plateau {
 
     private void echange(int xShape, int yShape, int x, int y) {
         Shape shapeADeplacer = this.plateau.get(xShape).get(yShape);
-        shapeADeplacer.set_position(new float[]{x, y}); //Changement de la pos de la shape
+        shapeADeplacer.setPosition(new float[]{x, y}); //Changement de la pos de la shape
         this.plateau.get(x).set(y, shapeADeplacer);
         this.plateau.get(xShape).set(yShape, null);
         this.mRenderer.echange(this.plateau);
