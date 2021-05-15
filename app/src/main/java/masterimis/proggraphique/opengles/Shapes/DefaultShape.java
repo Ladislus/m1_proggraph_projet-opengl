@@ -70,10 +70,7 @@ public abstract class DefaultShape implements Shape {
         ///////////////////////////////////
         // Actualisation des coordinates //
         ///////////////////////////////////
-
-        ByteBuffer bb = ByteBuffer.allocateDirect(this._coordinates.length * 4);
-        bb.order(ByteOrder.nativeOrder());
-        this._vertexBuffer = bb.asFloatBuffer();
+        this._vertexBuffer.clear();
         this._vertexBuffer.put(this._coordinates);
         this._vertexBuffer.position(0);
 

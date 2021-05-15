@@ -1,10 +1,7 @@
 package masterimis.proggraphique.opengles.Shapes;
 
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
-
+import java.util.Random;
 import masterimis.proggraphique.opengles.MyGLRenderer;
 import masterimis.proggraphique.opengles.MyGLSurfaceView;
 
@@ -85,7 +82,7 @@ public class Plateau {
                             //Ligne au dessus
                             lesVoisins.add(this.plateau.get(ligne).get(colonne - 1 ));
                         }
-                        int randomNum = ThreadLocalRandom.current().nextInt(0, lesVoisins.size());
+                        int randomNum = new Random().nextInt(lesVoisins.size());
                         int lig = (int) (1 - lesVoisins.get(randomNum).getPosition()[1]);
                         int col = (int) (1 + lesVoisins.get(randomNum).getPosition()[0]);
                         this.echange(lig, col, ligneNull, colonneNull);
