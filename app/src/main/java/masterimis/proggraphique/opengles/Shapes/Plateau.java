@@ -3,18 +3,22 @@ package masterimis.proggraphique.opengles.Shapes;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 import masterimis.proggraphique.opengles.MyGLRenderer;
+import masterimis.proggraphique.opengles.MyGLSurfaceView;
 
 public class Plateau {
     ArrayList<ArrayList<Shape>> plateau;
     private final MyGLRenderer mRenderer;
+    private MyGLSurfaceView view;
 
 
 
-    public Plateau(MyGLRenderer renderer) {
+    public Plateau(MyGLRenderer renderer, MyGLSurfaceView myGLSurfaceView) {
         this.plateau = new ArrayList<>();
         mRenderer = renderer;
+        this.view = myGLSurfaceView;
     }
 
     public void updateContent(ArrayList<Shape> shape) {
@@ -55,47 +59,55 @@ public class Plateau {
      */
     public void randomized() {
         this.updateContent(this.mRenderer.getShape());
-        for (int ligne = 0; ligne < this.plateau.size(); ligne++) {
-            for (int elem = 0; elem < this.plateau.get(ligne).size(); elem++) {
-                if (ligne > 0){
-                    //Ligne au dessus
-                    if(this.plateau.get(ligne - 1).get(elem) == null){
-                        this.echange(ligne, elem, ligne - 1, elem);
-                        return;
-                    }
-                }
-                if (ligne < 2){
-                    //Ligne en dessous
-                    if(this.plateau.get(ligne + 1).get(elem) == null){
-                        //Change avec voisin du dessous
-                        this.echange(ligne, elem, ligne + 1, elem);
-                        return;
-                    }
-                }
-                if (elem > 0){
-                    //Colonne a gauche
-                    if(this.plateau.get(ligne).get(elem - 1) == null){
-                        //Change avec voisin de gauche
-                        this.echange(ligne, elem, ligne, elem - 1);
-
-                        return;
-                    }
-                }
-                if (elem < 2){
-                    //Colonne a droite
-                    if(this.plateau.get(ligne).get(elem + 1) == null){
-                        //Change avec voisin de gauche
-                        this.echange(ligne, elem, ligne, elem + 1);
-                        return;
+        ArrayList<Shape> lesVoisins = new ArrayList<>();
+        int ligneNull;
+        int colonneNull;
+        for (int nbR = 0; nbR < 100; nbR ++){
+            for (int ligne = 0; ligne < this.plateau.size(); ligne++) {
+                for (int colonne = 0; colonne < this.plateau.get(ligne).size() ; colonne++) {
+                    if( this.plateau.get(ligne).get(colonne) == null){
+                        lesVoisins.clear();
+                        ligneNull = ligne;
+                        colonneNull = colonne;
+                        if (ligne > 0 ){
+                            //Ligne au dessus
+                            lesVoisins.add(this.plateau.get(ligne - 1).get(colonne));
+                        }
+                        if (ligne < 2 ){
+                            //Ligne au dessus
+                            lesVoisins.add(this.plateau.get(ligne + 1).get(colonne));
+                        }
+                        if (colonne < 2 ){
+                            //Ligne au dessus
+                            lesVoisins.add(this.plateau.get(ligne).get(colonne + 1 ));
+                        }
+                        if (colonne > 0 ){
+                            //Ligne au dessus
+                            lesVoisins.add(this.plateau.get(ligne).get(colonne - 1 ));
+                        }
+                        int randomNum = ThreadLocalRandom.current().nextInt(0, lesVoisins.size());
+                        int lig = (int) (1 - lesVoisins.get(randomNum).getPosition()[1]);
+                        int col = (int) (1 + lesVoisins.get(randomNum).getPosition()[0]);
+                        this.echange(lig, col, ligneNull, colonneNull);
+                        this.view.requestRender();
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
+
         }
+
     }
 
     private void echange(int xShape, int yShape, int x, int y) {
         Shape shapeADeplacer = this.plateau.get(xShape).get(yShape);
-        shapeADeplacer.setPosition(new float[]{x, y}); //Changement de la pos de la shape
+        float posY = 1 - x;
+        float posX = -1 + y;
+        shapeADeplacer.setPosition(new float[]{posX, posY}); //Changement de la pos de la shape
         this.plateau.get(x).set(y, shapeADeplacer);
         this.plateau.get(xShape).set(yShape, null);
     }
