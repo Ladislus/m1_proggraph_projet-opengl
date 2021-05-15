@@ -7,7 +7,7 @@ public enum Color {
 
     private final Float[] _values;
 
-    private Color(Float... values) {
+    Color(Float... values) {
         this._values = values;
     }
 
