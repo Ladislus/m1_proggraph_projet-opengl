@@ -13,32 +13,32 @@ public class Program {
     // identifiant (location) pour transmettre la matrice PxVxM
     private final int _mvpId;
 
-    int[] _linkStatus = {0};
-
     public Program() {
 
         /* Chargement des shaders */
         int vertexShader = MyGLRenderer.loadShader(
                 GLES30.GL_VERTEX_SHADER,
-                Shaders._vertex);
+                Shaders._vertex
+        );
         int fragmentShader = MyGLRenderer.loadShader(
                 GLES30.GL_FRAGMENT_SHADER,
-                Shaders._fragment);
+                Shaders._fragment
+        );
 
-        // identifiant du programme pour lier les shaders
-        int _programId = GLES30.glCreateProgram();             // create empty OpenGL Program
-        GLES30.glAttachShader(_programId, vertexShader);   // add the vertex shader to program
-        GLES30.glAttachShader(_programId, fragmentShader); // add the fragment shader to program
-        GLES30.glLinkProgram(_programId);                  // create OpenGL program executables
-        GLES30.glGetProgramiv(_programId, GLES30.GL_LINK_STATUS, _linkStatus,0);
+        int programId = GLES30.glCreateProgram();
+        GLES30.glAttachShader(programId, vertexShader);
+        GLES30.glAttachShader(programId, fragmentShader);
+        GLES30.glLinkProgram(programId);
+        int[] _linkStatus = { 0 };
+        GLES30.glGetProgramiv(programId, GLES30.GL_LINK_STATUS, _linkStatus,0);
 
         // Add program to OpenGL environment
-        GLES30.glUseProgram(_programId);
+        GLES30.glUseProgram(programId);
 
         // get handles to transformation matrix
-        this._mvpId = GLES30.glGetUniformLocation(_programId, "uMVPMatrix");
-        this._positionId = GLES30.glGetAttribLocation(_programId, "vPosition");
-        this._colorId = GLES30.glGetAttribLocation(_programId, "vCouleur");
+        this._mvpId = GLES30.glGetUniformLocation(programId, "uMVPMatrix");
+        this._positionId = GLES30.glGetAttribLocation(programId, "vPosition");
+        this._colorId = GLES30.glGetAttribLocation(programId, "vCouleur");
     }
 
     public void activate() {
@@ -47,7 +47,6 @@ public class Program {
     }
 
     public void disable() {
-        // Disable vertex array
         GLES30.glDisableVertexAttribArray(this._positionId);
         GLES30.glDisableVertexAttribArray(this._colorId);
     }

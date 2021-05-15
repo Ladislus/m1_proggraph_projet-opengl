@@ -17,16 +17,13 @@ package masterimis.proggraphique.opengles.Shapes;
 
 public class Square extends DefaultShape {
 
-
     private static final float[] SQUARE_INITIALS = {
             -1.0f,   1.0f, 0.0f,
             -1.0f,  -1.0f, 0.0f,
             1.0f,  -1.0f, 0.0f,
-            1.f,  1.f, 0.0f };
-
-
+            1.f,  1.f, 0.0f
+    };
     private static final short[] SQUARE_INDICES = { 0, 1, 2, 0, 2, 3 };
-
 
     public Square(float[] position, Color color) {
         super(position, color, SQUARE_INITIALS, SQUARE_INDICES);

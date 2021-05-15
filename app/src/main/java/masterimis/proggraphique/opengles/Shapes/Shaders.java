@@ -26,5 +26,4 @@ public class Shaders {
                     "float y = Position.y;\n"+
                     "fragColor = Couleur;\n" +
                     "}\n";
-
 }
