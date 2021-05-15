@@ -23,12 +23,14 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import masterimis.proggraphique.opengles.Shapes.Square;
+
 /* MyGLRenderer implémente l'interface générique GLSurfaceView.Renderer */
 
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
-    private Square   mSquare;
+    private Square mSquare;
 
     // Les matrices habituelles Model/View/Projection
 
