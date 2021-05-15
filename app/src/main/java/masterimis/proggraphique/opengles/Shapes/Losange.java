@@ -1,8 +1,6 @@
 package masterimis.proggraphique.opengles.Shapes;
-import android.opengl.GLES30;
 
 public class Losange extends DefaultShape {
-
 
     private static final float[] LOSANGE_INITIALS = {
             -1.0f, 0.0f, 1.0f,
@@ -11,7 +9,6 @@ public class Losange extends DefaultShape {
             0.0f, -1.0f, 1.0f,
     };
     private static final short[] LOSANGE_INDICES = { 0, 1, 2, 0, 2, 3};
-
 
     public Losange(float[] position, Color color) {
         super(position, color, LOSANGE_INITIALS, LOSANGE_INDICES);
