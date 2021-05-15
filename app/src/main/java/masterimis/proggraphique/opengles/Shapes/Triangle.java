@@ -18,11 +18,7 @@ package masterimis.proggraphique.opengles.Shapes;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
-import java.util.ArrayList;
-
-import android.util.Log;
 
 //import android.opengl.GLES20;
 import android.opengl.GLES30;
@@ -30,35 +26,35 @@ import android.opengl.GLES30;
 import masterimis.proggraphique.opengles.MyGLRenderer;
 
 
-//Dessiner un carré
+//Dessiner un Triangle
 
-public class Square implements Shape {
-/* Le vertex shader avec la définition de gl_Position et les variables utiles au fragment shader
- */
+public class Triangle implements Shape {
+    /* Le vertex shader avec la définition de gl_Position et les variables utiles au fragment shader
+     */
     private final String vertexShaderCode =
-        "#version 300 es\n"+
-                "uniform mat4 uMVPMatrix;\n"+
-            "in vec3 vPosition;\n" +
-                "in vec4 vCouleur;\n"+
-                "out vec4 Couleur;\n"+
-                "out vec3 Position;\n"+
-            "void main() {\n" +
-                "Position = vPosition;\n"+
-            "gl_Position = uMVPMatrix * vec4(vPosition,1.0);\n" +
-                "Couleur = vCouleur;\n"+
-            "}\n";
+            "#version 300 es\n"+
+                    "uniform mat4 uMVPMatrix;\n"+
+                    "in vec3 vPosition;\n" +
+                    "in vec4 vCouleur;\n"+
+                    "out vec4 Couleur;\n"+
+                    "out vec3 Position;\n"+
+                    "void main() {\n" +
+                    "Position = vPosition;\n"+
+                    "gl_Position = uMVPMatrix * vec4(vPosition,1.0);\n" +
+                    "Couleur = vCouleur;\n"+
+                    "}\n";
 
     private final String fragmentShaderCode =
             "#version 300 es\n"+
-            "precision mediump float;\n" + // pour définir la taille d'un float
-            "in vec4 Couleur;\n"+
-            "in vec3 Position;\n"+
-            "out vec4 fragColor;\n"+
-            "void main() {\n" +
-            "float x = Position.x;\n"+
-            "float y = Position.y;\n"+
-            "fragColor = Couleur;\n" +
-            "}\n";
+                    "precision mediump float;\n" + // pour définir la taille d'un float
+                    "in vec4 Couleur;\n"+
+                    "in vec3 Position;\n"+
+                    "out vec4 fragColor;\n"+
+                    "void main() {\n" +
+                    "float x = Position.x;\n"+
+                    "float y = Position.y;\n"+
+                    "fragColor = Couleur;\n" +
+                    "}\n";
 
     /* les déclarations pour l'équivalent des VBO */
 
@@ -85,19 +81,13 @@ public class Square implements Shape {
      */
 
     static float squareCoords[] = {
-            -1.0f,   1.0f, 0.0f,
-            -1.0f,  -1.0f, 0.0f,
-            1.0f,  -1.0f, 0.0f,
-            1.f,  1.f, 0.0f };
+            0.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
+             1.0f, -1.0f, 1.0f
+    };
     // Le tableau des couleurs
-//    static float squareColors[] = {
-//             1.0f,  0.0f, 0.0f, 1.0f,
-//             1.0f,  1.0f, 1.0f, 1.0f,
-//             0.0f,  1.0f, 0.0f, 1.0f,
-//             0.0f,  0.0f, 1.0f, 1.0f };
-
     // Le carré est dessiné avec 2 triangles
-    private final short Indices[] = { 0, 1, 2, 0, 2, 3 };
+    private final short Indices[] = { 0, 1, 2};
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // le pas entre 2 sommets : 4 bytes per vertex
 
@@ -105,7 +95,7 @@ public class Square implements Shape {
 
     private final float Position[] = {0.0f,0.0f};
 
-    public Square(float[] Pos, Color color) {
+    public Triangle(float[] Pos, Color color) {
 
         Position[0] = Pos[0];
         Position[1] = Pos[1];
@@ -118,7 +108,6 @@ public class Square implements Shape {
 
         //Ce code est fait par des professionnels, ne pas le reproduire
         float[] squareColors = {
-                color.getColorValues()[0], color.getColorValues()[1], color.getColorValues()[2], color.getColorValues()[3],
                 color.getColorValues()[0], color.getColorValues()[1], color.getColorValues()[2], color.getColorValues()[3],
                 color.getColorValues()[0], color.getColorValues()[1], color.getColorValues()[2], color.getColorValues()[3],
                 color.getColorValues()[0], color.getColorValues()[1], color.getColorValues()[2], color.getColorValues()[3],
@@ -166,7 +155,7 @@ public class Square implements Shape {
         // Add program to OpenGL environment
         GLES30.glUseProgram(IdProgram);
 
-           // get handle to shape's transformation matrix
+        // get handle to shape's transformation matrix
         IdMVPMatrix = GLES30.glGetUniformLocation(IdProgram, "uMVPMatrix");
 
         // Apply the projection and view transformation
