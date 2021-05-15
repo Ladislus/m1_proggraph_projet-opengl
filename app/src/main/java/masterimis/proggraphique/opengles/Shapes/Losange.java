@@ -90,6 +90,12 @@ public class Losange implements Shape {
             1.0f, 0.0f, 1.0f,
             0.0f, -1.0f, 1.0f,
     };
+    static final float initSquareCoords[] = {
+            -1.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 1.0f,
+            1.0f, 0.0f, 1.0f,
+            0.0f, -1.0f, 1.0f,
+    };
     // Le tableau des couleurs
     // Le carré est dessiné avec 2 triangles
     private final short Indices[] = { 0, 1, 2, 0, 2, 3};
@@ -104,6 +110,10 @@ public class Losange implements Shape {
 
         Position[0] = Pos[0];
         Position[1] = Pos[1];
+        for(int i = 0; i < squareCoords.length; i+=3){
+            squareCoords[i] = initSquareCoords[i] + (7*Pos[0]);
+            squareCoords[i+1] = initSquareCoords[i+1] + (7*Pos[1]);
+        }
         // initialisation du buffer pour les vertex (4 bytes par float)
         ByteBuffer bb = ByteBuffer.allocateDirect(squareCoords.length * 4);
         bb.order(ByteOrder.nativeOrder());
@@ -154,6 +164,10 @@ public class Losange implements Shape {
     public void set_position(float[] pos) {
         Position[0]=pos[0];
         Position[1]=pos[1];
+        for(int i = 0; i < squareCoords.length; i+=3){
+            squareCoords[i] = initSquareCoords[i] + (7*pos[0]);
+            squareCoords[i+1] = initSquareCoords[i+1] + (7*pos[1]);
+        }
     }
     /* La fonction Display */
     @Override
@@ -197,6 +211,11 @@ public class Losange implements Shape {
         GLES30.glDisableVertexAttribArray(IdPosition);
         GLES30.glDisableVertexAttribArray(IdCouleur);
 
+    }
+
+    @Override
+    public float[] getPosition() {
+        return this.Position;
     }
 
 }

@@ -55,9 +55,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
 
-//        this.mSquarePosition.add(new float[]{-3.0f, 0.0f});
-//        this.mSquarePosition.add(new float[]{-3.0f, 0.0f});
-//        this.mSquarePosition.add(new float[]{-3.0f, 0.0f});
 
         this.mSquareColors.add(Color.RED);
         this.mSquareColors.add(Color.GREEN);
@@ -68,15 +65,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         /* on va définir une classe Square pour dessiner des carrés */
         for(int i = 0; i < 3; i++){
-            mSquare.add(new Square(mSquarePosition, mSquareColors.get(i)));
+            mSquare.add(new Square(new float[]{-1.0f + i, 1.0f}, mSquareColors.get(i)));
+            mSquare.add(new Triangle(new float[]{-1.0f + i, 0.0f}, mSquareColors.get(i)));
+            mSquare.add(new Losange(new float[]{-1.0f + i, -1.0f}, mSquareColors.get(i)));
         }
-        for(int i = 0; i < 3; i++){
-            mSquare.add(new Triangle(mSquarePosition, mSquareColors.get(i)));
-        }
-        for(int i = 0; i < 2; i++){
-            mSquare.add(new Losange(mSquarePosition, mSquareColors.get(i)));
-        }
-
     }
 
     /* Deuxième méthode équivalente à la fonction Display */
@@ -103,13 +95,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         for (int i = 0; i < mSquare.size(); i++){
             /* on appelle la méthode dessin du carré élémentaire */
-            float x = (i == 0) ? -3.0f : this.mSquarePosition[0];
-            x = (i == 3 || i == 6) ? -6.0f : x;
-            float y = (i == 3 || i == 6) ? -3.0f : 0;
-            Matrix.translateM(mModelMatrix, 0, x, y, 0);
+//            float x = (i == 0) ? -3.0f : this.mSquarePosition[0];
+//            x = (i == 3 || i == 6) ? -6.0f : x;
+//            float y = (i == 3 || i == 6) ? -3.0f : 0;
+            Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, 0);
 
-            Log.d("Renderer", "mSquarex"+Float.toString(x));
-            Log.d("Renderer", "mSquarey"+Float.toString(this.mSquarePosition[1]));
+            Log.d("Renderer", "mSquare (x,y)"+Float.toString(this.mSquare.get(i).getPosition()[0])+","+Float.toString(this.mSquare.get(i).getPosition()[1]));
 
             Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
             mSquare.get(i).draw(scratch);
