@@ -23,6 +23,8 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
+import masterimis.proggraphique.opengles.Shapes.Shape;
+
 /* La classe MyGLSurfaceView avec en particulier la gestion des événements
   et la création de l'objet renderer
 
@@ -96,6 +98,14 @@ public class MyGLSurfaceView extends GLSurfaceView {
         /* Le carré représenté a une arête de 2 (oui il va falloir changer cette valeur en dur !!)
         /* On teste si le point touché appartient au carré ou pas car on ne doit le déplacer que si ce point est dans le carré
         */
+
+        ArrayList<Shape> mesFormes = mRenderer.getShape();
+        Log.d("message", "Formes (x,y) : ");
+
+        for(Shape s : mesFormes){
+            Log.d("message", "Coords (x,y) : "+s.getPosition()[0]+","+s.getPosition()[1]);
+            boolean test_square = ((x_opengl < s.getPosition()[0]+1.0) && (x_opengl > s.getPosition()[0]-1.0) && (y_opengl < s.getPosition()[1]+1.0) && (y_opengl > s.getPosition()[1]-1.0));
+        }
 
        boolean test_square = ((x_opengl < pos[0]+1.0) && (x_opengl > pos[0]-1.0) && (y_opengl < pos[1]+1.0) && (y_opengl > pos[1]-1.0));
 

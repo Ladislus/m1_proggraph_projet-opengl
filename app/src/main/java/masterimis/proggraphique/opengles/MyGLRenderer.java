@@ -51,6 +51,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private ArrayList<Color> mSquareColors = new ArrayList<>();
 
+    public ArrayList<Shape> getShape() {
+        return mSquare;
+    }
+
     /* Première méthode équivalente à la fonction init en OpenGLSL */
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -67,7 +71,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         for(int i = 0; i < 3; i++){
             mSquare.add(new Square(new float[]{-1.0f + i, 1.0f}, mSquareColors.get(i)));
             mSquare.add(new Triangle(new float[]{-1.0f + i, 0.0f}, mSquareColors.get(i)));
-            mSquare.add(new Losange(new float[]{-1.0f + i, -1.0f}, mSquareColors.get(i)));
+            if(i < 2){
+                mSquare.add(new Losange(new float[]{-1.0f + i, -1.0f}, mSquareColors.get(i)));
+            }
         }
     }
 
