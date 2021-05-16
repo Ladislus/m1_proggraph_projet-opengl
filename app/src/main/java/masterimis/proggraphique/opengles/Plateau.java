@@ -1,5 +1,6 @@
 package masterimis.proggraphique.opengles;
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -60,7 +61,6 @@ public class Plateau {
 
     private void getVoisins() {
         this._voisins.clear();
-
         if (this._null.getX() <= 1) getShape(this._null.getX() + 1, this._null.getY()).ifPresent(this._voisins::add);
         if (this._null.getX() >= 1) getShape(this._null.getX() - 1, this._null.getY()).ifPresent(this._voisins::add);
         if (this._null.getY() <= 1) getShape(this._null.getX(), this._null.getY() + 1).ifPresent(this._voisins::add);
@@ -150,5 +150,18 @@ public class Plateau {
                 if (!shape.getColor().equals(correct.second) || !shape.getFamily().equals(correct.first)) return false;
             }
         return true;
+    }
+
+    public void play(int posX, int posY) {
+        int ligne = this.glToIndices(posX, posY).getX();
+        int col = this.glToIndices(posX, posY).getY();
+        this.getVoisins();
+        if(this._voisins.contains(this._plateau.get(ligne).get(col))){
+            this.swap(ligne, col, this._null.getX(), this._null.getY());
+            this._view.requestRender();
+        }
+
+        Log.d("testAction", "ligne,col : "+this.glToIndices(posX, posY).getX()+","+this.glToIndices(posX, posY).getY());
+
     }
 }

@@ -12,7 +12,7 @@ import masterimis.proggraphique.opengles.Utils.Couple;
 
 public abstract class DefaultShape implements Shape {
 
-    protected static final int OFFSET = 7;
+    public static final int OFFSET = 7;
     protected static final int COORDINATES_SIZE = 3; // nombre de coordonnées par vertex
     protected static final int COLORS_SIZE = 4; // nombre de composantes couleur par vertex
     protected final int VERTEX_STRIDE = COORDINATES_SIZE * 4;
