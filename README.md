@@ -165,3 +165,19 @@ D'abord, nous récupérons les coordonnées x,y opengl du clique, en les divisan
     }
 ```
 Ensuite, le plateau prends le relais : on récupere la ligne et la colonne de l'éléments (par rapport a notre structure de données liste de listes). On regarde si la case vide a l'element cliqué comme voisin ( dans la liste this_voisins) et si tel est le cas nous opérons un swap des positions entre ces deux elements. Ensuite on met a jour la view. 
+```java
+    private void swap(int xShape, int yShape, int x, int y) {
+        Optional<Shape> optionalShapeToSwap = this.getShape(xShape, yShape);
+        assert optionalShapeToSwap.isPresent();
+
+        Shape shapeToSwap = optionalShapeToSwap.get();
+        Couple<Float> shapeNewPosition = indicesToGL(x, y);
+        shapeToSwap.setPosition(shapeNewPosition);
+
+        this.setShape(x, y, shapeToSwap);
+        this.setShape(xShape, yShape, null);
+
+        this._null = new Couple<>(xShape, yShape);
+        this.getVoisins();
+    }
+```
