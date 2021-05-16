@@ -1,7 +1,6 @@
 package masterimis.proggraphique.opengles;
 
 import android.media.MediaPlayer;
-import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;

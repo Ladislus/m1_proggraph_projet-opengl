@@ -17,7 +17,7 @@ public class Triangle extends DefaultShape {
 
     @Override
     protected void initColors(Color color) {
-        //Ce code est fait par des professionnels, ne pas le reproduire
+        // Ce code est fait par des professionnels, ne pas le reproduire
         this._colors = new float[] {
                 color.getColorValues()[0], color.getColorValues()[1], color.getColorValues()[2], color.getColorValues()[3],
                 color.getColorValues()[0], color.getColorValues()[1], color.getColorValues()[2], color.getColorValues()[3],
