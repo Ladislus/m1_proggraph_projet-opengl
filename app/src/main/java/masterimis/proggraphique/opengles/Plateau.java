@@ -49,7 +49,6 @@ public class Plateau {
         return new Couple<Float>(0.0f + glX, 0.0f + glY);
     }
 
-    // TODO change API
     private void getVoisins() {
         this._voisins.clear();
 
@@ -75,7 +74,6 @@ public class Plateau {
         this.getVoisins();
     }
 
-    // TODO Change API
     private Optional<Shape> getShape(int x, int y) {
         assert (x <= 2 && x >= 0);
         assert (y <= 2 && y >= 0);
