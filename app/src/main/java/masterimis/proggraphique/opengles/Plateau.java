@@ -139,6 +139,8 @@ public class Plateau {
     }
 
     public boolean check() {
+        assert this._correct.size() > 0;
+
         for (int line = 0; line < this._plateau.size(); line++)
             for (int column = 0; column < this._plateau.get(line).size(); column++) {
                 Shape shape = this._plateau.get(line).get(column);
