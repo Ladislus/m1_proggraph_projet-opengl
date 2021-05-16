@@ -13,7 +13,7 @@ import masterimis.proggraphique.opengles.Shapes.DefaultShape;
 
 public class GLView extends GLSurfaceView {
 
-    private static final int RANDOMIZE_ROUNDS = 2;
+    private static final int RANDOMIZE_ROUNDS = 20;
 
     private final Plateau _plateau;
     private boolean _isRandomized = false;
@@ -93,21 +93,13 @@ public class GLView extends GLSurfaceView {
                 int posX = (XGauche) ? -1 : (XDroite) ? 1 : 0;
                 int posY = (YHaut) ? 1 : (YBas) ? - 1 : 0;
                 boolean played = this._plateau.play(posX, posY);
-                if (!played) {
-                    Toast.makeText(this.getContext(), "Impossible de jouer ce coup !", Toast.LENGTH_SHORT).show();
-                    // TODO Blink red
-                }
-
-                //Check si fini
-                if (this._plateau.check()) {
-                    Log.d("testAction", "WIN");
+                if (!played) Toast.makeText(this.getContext(), "Impossible de jouer ce coup !", Toast.LENGTH_SHORT).show();
+                else if (this._plateau.check()) {
                     Toast.makeText(this.getContext(), "Féliciation ! Victoire ! Cliquez pour rejouer", Toast.LENGTH_SHORT).show();
-                    //On permet de rejouer
                     this._isRandomized = false;
                 }
             }
         }
         return true;
     }
-
 }
