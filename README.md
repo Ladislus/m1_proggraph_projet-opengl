@@ -154,13 +154,15 @@ Maintenant le jeu commence ! Nous récupérons d'abord la shape sur laquelle l'u
 D'abord, nous récupérons les coordonnées x,y opengl du clique, en les divisant pas l'offset, dans le but de récupérer les coordonnées d'une valeur soit 1, 0 ou - 1 comme expliqué plus haut. Biensur elle ne sont pas exact et donc nous faisons une approximation +- 0.25f pour déduire la position de la shape (posX et PosY). De cette façon, nous pouvons jouer avec la bonne shape.
 ```java
     public boolean play(int posX, int posY) {
-        int ligne = this.glToIndices(posX, posY).getX();
-        int col = this.glToIndices(posX, posY).getY();
-        if(this._voisins.contains(this._plateau.get(ligne).get(col))){
-            this.swap(ligne, col, this._null.getX(), this._null.getY());
+        Couple<Integer> converted = this.glToIndices(posX, posY);
+
+        if(this._voisins.contains(this._plateau.get(converted.getX()).get(converted.getY()))){
+            this.swap(converted.getX(), converted.getY(), this._null.getX(), this._null.getY());
+            Objects.requireNonNull(this._sounds.get(SOUND_SWIPE)).start();
             this._view.requestRender();
             return true;
         }
+        Objects.requireNonNull(this._sounds.get(SOUND_ERROR)).start();
         return false;
     }
 ```

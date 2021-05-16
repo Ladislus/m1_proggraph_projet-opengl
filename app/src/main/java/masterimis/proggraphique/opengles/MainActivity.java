@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
 
+        // Récupération des sons
         Map<Integer, MediaPlayer> sounds = new HashMap<>();
         sounds.put(Plateau.SOUND_SWIPE, MediaPlayer.create(getApplicationContext(), R.raw.swipe));
         sounds.put(Plateau.SOUND_ERROR, MediaPlayer.create(getApplicationContext(), R.raw.error));
