@@ -18,7 +18,6 @@ public abstract class DefaultShape implements Shape {
     protected final int VERTEX_STRIDE = COORDINATES_SIZE * 4;
     protected final int COLOR_STRIDE = COLORS_SIZE * 4;
 
-
     protected static final Program _program = new Program();
 
     // Buffer pout les points

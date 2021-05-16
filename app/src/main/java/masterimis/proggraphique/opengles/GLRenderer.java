@@ -89,6 +89,4 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 
         return shaderId;
     }
-
-    public Couple<Float> getPosition() { return this._position; }
 }

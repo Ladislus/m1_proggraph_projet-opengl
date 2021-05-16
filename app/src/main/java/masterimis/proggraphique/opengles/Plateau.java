@@ -1,10 +1,12 @@
 package masterimis.proggraphique.opengles;
 
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -30,9 +32,15 @@ public class Plateau {
     private final GLRenderer _renderer;
     private final GLView _view;
 
-    public Plateau(GLRenderer renderer, GLView glView) {
+    public static final Integer SOUND_SWIPE = 0;
+    public static final Integer SOUND_ERROR = 1;
+    public static final Integer SOUND_WIN = 2;
+    private final Map<Integer, MediaPlayer> _sounds;
+
+    public Plateau(GLRenderer renderer, GLView glView, Map<Integer, MediaPlayer> sounds) {
         this._renderer = renderer;
         this._view = glView;
+        this._sounds = sounds;
     }
 
     private Couple<Integer> glToIndices(float x, float y) {
@@ -149,18 +157,20 @@ public class Plateau {
                 if ((Objects.isNull(shape) && !Objects.isNull(correct)) || (!Objects.isNull(shape) && Objects.isNull(correct))) return false;
                 if (!Objects.isNull(shape) && (!shape.getColor().equals(correct.second) || !shape.getFamily().equals(correct.first))) return false;
             }
+        Objects.requireNonNull(this._sounds.get(SOUND_WIN)).start();
         return true;
     }
 
     public boolean play(int posX, int posY) {
-        int ligne = this.glToIndices(posX, posY).getX();
-        int col = this.glToIndices(posX, posY).getY();
-        this.getVoisins();
-        if(this._voisins.contains(this._plateau.get(ligne).get(col))){
-            this.swap(ligne, col, this._null.getX(), this._null.getY());
+        Couple<Integer> converted = this.glToIndices(posX, posY);
+
+        if(this._voisins.contains(this._plateau.get(converted.getX()).get(converted.getY()))){
+            this.swap(converted.getX(), converted.getY(), this._null.getX(), this._null.getY());
+            Objects.requireNonNull(this._sounds.get(SOUND_SWIPE)).start();
             this._view.requestRender();
             return true;
         }
+        Objects.requireNonNull(this._sounds.get(SOUND_ERROR)).start();
         return false;
     }
 }
