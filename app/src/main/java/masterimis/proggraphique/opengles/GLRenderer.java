@@ -33,7 +33,7 @@ import masterimis.proggraphique.opengles.Shapes.Triangle;
 
 /* MyGLRenderer implémente l'interface générique GLSurfaceView.Renderer */
 
-public class MyGLRenderer implements GLSurfaceView.Renderer {
+public class GLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
     private ArrayList<Shape> shapes = new ArrayList<>();
@@ -51,7 +51,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private ArrayList<Color> mSquareColors = new ArrayList<>();
 
-    public ArrayList<Shape> getShape() {
+    public ArrayList<Shape> getShapes() {
         return shapes;
     }
 

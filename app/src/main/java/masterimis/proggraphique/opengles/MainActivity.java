@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class OpenGLES20Activity extends Activity {
+public class MainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,6 +17,6 @@ public class OpenGLES20Activity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
 
-        setContentView(new MyGLSurfaceView(this));
+        setContentView(new GLView(this));
     }
 }

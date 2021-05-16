@@ -16,11 +16,11 @@ public class Program {
     public Program() {
 
         /* Chargement des shaders */
-        int vertexShader = MyGLRenderer.loadShader(
+        int vertexShader = GLRenderer.loadShader(
                 GLES30.GL_VERTEX_SHADER,
                 Shaders._vertex
         );
-        int fragmentShader = MyGLRenderer.loadShader(
+        int fragmentShader = GLRenderer.loadShader(
                 GLES30.GL_FRAGMENT_SHADER,
                 Shaders._fragment
         );

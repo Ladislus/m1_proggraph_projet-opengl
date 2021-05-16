@@ -21,32 +21,29 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import java.util.ArrayList;
-
-import masterimis.proggraphique.opengles.Shapes.Plateau;
-import masterimis.proggraphique.opengles.Shapes.Shape;
-
-public class MyGLSurfaceView extends GLSurfaceView {
+public class GLView extends GLSurfaceView {
 
     /* Un attribut : le renderer (GLSurfaceView.Renderer est une interface générique disponible) */
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
-    private final MyGLRenderer mRenderer;
-    private Plateau plateau;
-    private boolean isRandomized = false;
+    private static final int RANDOMIZE_ROUNDS = 100;
 
-    public MyGLSurfaceView(Context context) {
+    private final GLRenderer _renderer;
+    private Plateau _plateau;
+    private boolean _isRandomized = false;
+
+    public GLView(Context context) {
         super(context);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
         // Création d'un context OpenGLES 2.0
         setEGLContextClientVersion(3);
 
         // Création du renderer qui va être lié au conteneur View créé
-        mRenderer = new MyGLRenderer();
-        setRenderer(mRenderer);
+        this._renderer = new GLRenderer();
+        setRenderer(_renderer);
         // Option pour indiquer qu'on redessine uniquement si les données changent
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-        this.plateau = new Plateau(this.mRenderer, this);
+        this._plateau = new Plateau(this._renderer, this);
     }
 
     /* pour gérer la translation */
@@ -75,7 +72,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         /* accès aux paramètres du rendu (cf MyGLRenderer.java)
         soit la position courante du centre du carré
          */
-        float[] pos = mRenderer.getPosition();
+        float[] pos = this._renderer.getPosition();
 
         /* Conversion des coordonnées pixel en coordonnées OpenGL
         Attention l'axe x est inversé par rapport à OpenGLSL
@@ -96,13 +93,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
 //        Log.d("message","test_square="+Boolean.toString(test_square));
 //        Log.d("message","condition="+Boolean.toString(condition));
 
-        if(!this.isRandomized){
+        if(!this._isRandomized){
             switch (e.getAction()) {
             /* Lorsqu'on touche l'écran on mémorise juste le point */
             case MotionEvent.ACTION_UP:
-                this.plateau.randomized();
-                this.isRandomized = true;
-                Log.d("abricot","null at : "+ this.plateau.getPosEmpty()[0] + "," +  this.plateau.getPosEmpty()[1]);
+                this._plateau.randomize(RANDOMIZE_ROUNDS);
+                this._isRandomized = true;
                 requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
             }
         }
