@@ -30,6 +30,7 @@ import masterimis.proggraphique.opengles.Shapes.Losange;
 import masterimis.proggraphique.opengles.Shapes.Shape;
 import masterimis.proggraphique.opengles.Shapes.Square;
 import masterimis.proggraphique.opengles.Shapes.Triangle;
+import masterimis.proggraphique.opengles.Utils.Couple;
 
 /* MyGLRenderer implémente l'interface générique GLSurfaceView.Renderer */
 
@@ -68,16 +69,16 @@ public class GLRenderer implements GLSurfaceView.Renderer {
         GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         /* on va définir une classe Square pour dessiner des carrés */
-        shapes.add(new Square(new float[]{-1.0f, 1.0f}, mSquareColors.get(0)));
-        shapes.add(new Square(new float[]{-1.0f + 1, 1.0f}, mSquareColors.get(1)));
-        shapes.add(new Square(new float[]{-1.0f + 2, 1.0f}, mSquareColors.get(2)));
+        shapes.add(new Square(new Couple<Float>(-1.0f, 1.0f ), mSquareColors.get(0)));
+        shapes.add(new Square(new Couple<Float>(-1.0f + 1, 1.0f ), mSquareColors.get(1)));
+        shapes.add(new Square(new Couple<Float>(-1.0f + 2, 1.0f ), mSquareColors.get(2)));
 
-        shapes.add(new Triangle(new float[]{-1.0f, 0.0f}, mSquareColors.get(0)));
-        shapes.add(new Triangle(new float[]{-1.0f + 1, 0.0f}, mSquareColors.get(1)));
-        shapes.add(new Triangle(new float[]{-1.0f + 2, 0.0f}, mSquareColors.get(2)));
+        shapes.add(new Triangle(new Couple<Float>(-1.0f, 0.0f ), mSquareColors.get(0)));
+        shapes.add(new Triangle(new Couple<Float>(-1.0f + 1, 0.0f ), mSquareColors.get(1)));
+        shapes.add(new Triangle(new Couple<Float>(-1.0f + 2, 0.0f ), mSquareColors.get(2)));
 
-        shapes.add(new Losange(new float[]{-1.0f, -1.0f}, mSquareColors.get(0)));
-        shapes.add(new Losange(new float[]{-1.0f + 1, -1.0f}, mSquareColors.get(1)));
+        shapes.add(new Losange(new Couple<Float>(-1.0f, -1.0f ), mSquareColors.get(0)));
+        shapes.add(new Losange(new Couple<Float>(-1.0f + 1, -1.0f ), mSquareColors.get(1)));
 
 
     }
@@ -110,8 +111,6 @@ public class GLRenderer implements GLSurfaceView.Renderer {
 //            x = (i == 3 || i == 6) ? -6.0f : x;
 //            float y = (i == 3 || i == 6) ? -3.0f : 0;
             Matrix.translateM(mModelMatrix, 0, 0.0f, 0.0f, 0);
-
-            Log.d("Renderer", "mSquare (x,y)"+Float.toString(this.shapes.get(i).getPosition()[0])+","+Float.toString(this.shapes.get(i).getPosition()[1]));
 
             Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mModelMatrix, 0);
             shapes.get(i).draw(scratch);

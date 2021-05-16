@@ -26,7 +26,7 @@ public class GLView extends GLSurfaceView {
     /* Un attribut : le renderer (GLSurfaceView.Renderer est une interface générique disponible) */
     /* MyGLRenderer va implémenter les méthodes de cette interface */
 
-    private static final int RANDOMIZE_ROUNDS = 100;
+    private static final int RANDOMIZE_ROUNDS = 200;
 
     private final GLRenderer _renderer;
     private Plateau _plateau;

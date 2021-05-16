@@ -8,6 +8,7 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import masterimis.proggraphique.opengles.Program;
+import masterimis.proggraphique.opengles.Utils.Couple;
 
 public abstract class DefaultShape implements Shape {
 
@@ -27,14 +28,14 @@ public abstract class DefaultShape implements Shape {
     // Buffer des couleurs (4 par sommets)
     protected FloatBuffer _colorBuffer;
 
-    protected final float[] _position = { 0.0f, 0.0f };
+    protected final Couple<Float> _position = new Couple<>( 0.0f, 0.0f );
 
     protected final short[] _indices;
     protected final float[] _initials;
     protected float[] _coordinates;
     protected float[] _colors;
 
-    public DefaultShape(float[] position, Color color, float[] initials, short[] indices) {
+    public DefaultShape(Couple<Float> position, Color color, float[] initials, short[] indices) {
 
         this._initials = initials;
         this._coordinates = new float[initials.length];
@@ -95,17 +96,17 @@ public abstract class DefaultShape implements Shape {
     }
 
     @Override
-    public float[] getPosition() {
+    public Couple<Float> getPosition() {
         return this._position;
     }
 
     @Override
-    public void setPosition(float[] position) {
-        this._position[0] = position[0];
-        this._position[1] = position[1];
+    public void setPosition(Couple<Float> position) {
+        this._position.setX(position.getX());
+        this._position.setY(position.getY());
         for(int i = 0; i < this._coordinates.length; i += 3) {
-            this._coordinates[i] = _initials[i] + (OFFSET * position[0]);
-            this._coordinates[i + 1] = _initials[i + 1] + (OFFSET * position[1]);
+            this._coordinates[i] = _initials[i] + (OFFSET * position.getX());
+            this._coordinates[i + 1] = _initials[i + 1] + (OFFSET * position.getY());
         }
     }
 

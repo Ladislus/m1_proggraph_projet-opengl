@@ -1,5 +1,7 @@
 package masterimis.proggraphique.opengles.Shapes;
 
+import masterimis.proggraphique.opengles.Utils.Couple;
+
 public class Triangle extends DefaultShape {
 
     private static final float[] TRIANGLE_INITIALS = {
@@ -9,7 +11,7 @@ public class Triangle extends DefaultShape {
     };
     private static final short[] TRIANGLE_INDICES = { 0, 1, 2};
 
-    public Triangle(float[] position, Color color) {
+    public Triangle(Couple<Float> position, Color color) {
         super(position, color, TRIANGLE_INITIALS, TRIANGLE_INDICES);
     }
 

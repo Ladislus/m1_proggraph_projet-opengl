@@ -39,6 +39,10 @@ public class Plateau {
         return new Couple<>(indexX, indexY);
     }
 
+    private Couple<Integer> glToIndices(Couple<Float> position) {
+        return this.glToIndices(position.getX(), position.getY());
+    }
+
     private Couple<Float> indicesToGL(int x, int y) {
         int glX = x - 1;
         int glY = 1 - y;
@@ -94,8 +98,7 @@ public class Plateau {
 
         Shape shapeToSwap = optionalShapeToSwap.get();
         Couple<Float> shapeNewPosition = indicesToGL(x, y);
-
-        shapeToSwap.setPosition(new float[] { shapeNewPosition.getX(), shapeNewPosition.getY() });
+        shapeToSwap.setPosition(shapeNewPosition);
 
         this.setShape(x, y, shapeToSwap);
         this.setShape(xShape, yShape, null);
@@ -104,9 +107,6 @@ public class Plateau {
         this.getVoisins();
     }
 
-    /**
-     * Randomize le plateau
-     */
     public void randomize(int rounds) {
         this.updateContent(this._renderer.getShapes());
 
@@ -114,7 +114,7 @@ public class Plateau {
             int randomIndex = _random.nextInt(this._voisins.size());
 
             Shape shapeToSwap = this._voisins.get(randomIndex);
-            Couple<Integer> indices = this.glToIndices(shapeToSwap.getPosition()[0], shapeToSwap.getPosition()[1]);
+            Couple<Integer> indices = this.glToIndices(shapeToSwap.getPosition());
 
             this.swap(indices.getX(), indices.getY(), this._null.getX(), this._null.getY());
             this._view.requestRender();
