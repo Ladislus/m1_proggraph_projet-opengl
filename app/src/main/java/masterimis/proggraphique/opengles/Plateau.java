@@ -147,21 +147,20 @@ public class Plateau {
                 Pair<Family, Color> correct = this._correct.get(line).get(column);
 
                 if ((Objects.isNull(shape) && !Objects.isNull(correct)) || (!Objects.isNull(shape) && Objects.isNull(correct))) return false;
-                if (!shape.getColor().equals(correct.second) || !shape.getFamily().equals(correct.first)) return false;
+                if (!Objects.isNull(shape) && (!shape.getColor().equals(correct.second) || !shape.getFamily().equals(correct.first))) return false;
             }
         return true;
     }
 
-    public void play(int posX, int posY) {
+    public boolean play(int posX, int posY) {
         int ligne = this.glToIndices(posX, posY).getX();
         int col = this.glToIndices(posX, posY).getY();
         this.getVoisins();
         if(this._voisins.contains(this._plateau.get(ligne).get(col))){
             this.swap(ligne, col, this._null.getX(), this._null.getY());
             this._view.requestRender();
+            return true;
         }
-
-        Log.d("testAction", "ligne,col : "+this.glToIndices(posX, posY).getX()+","+this.glToIndices(posX, posY).getY());
-
+        return false;
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,7 +14,7 @@ import masterimis.proggraphique.opengles.Shapes.DefaultShape;
 
 public class GLView extends GLSurfaceView {
 
-    private static final int RANDOMIZE_ROUNDS = 200;
+    private static final int RANDOMIZE_ROUNDS = 25;
 
     private final GLRenderer _renderer;
     private final Plateau _plateau;
@@ -45,9 +46,6 @@ public class GLView extends GLSurfaceView {
                 this._plateau.randomize(RANDOMIZE_ROUNDS);
                 this._isRandomized = true;
                 requestRender();
-                // TODO : Win
-                if (this._plateau.check()) Log.d("OpenGL", "WIN");
-            // TODO Jouer un coup
             } else {
 
                 Log.d("OpenGL", "Coup !");
@@ -92,10 +90,18 @@ public class GLView extends GLSurfaceView {
                 );
                 int posX = (XGauche) ? -1 : (XDroite) ? 1 : 0;
                 int posY = (YHaut) ? 1 : (YBas) ? - 1 : 0;
-                this._plateau.play(posX, posY);
-//                // TODO Récupération de l'object cliqué
-//                Couple<Float> position = this._renderer.getPosition();
-//                boolean test_square = ((glX < position.getX() + 1.0f) && (glX > position.getX() - 1.0f) && (glY < position.getY() + 1.0f) && (glY > position.getY() - 1.0f));
+                boolean aJouer = this._plateau.play(posX, posY);
+                if (!aJouer){
+                    Toast.makeText(this.getContext(), "Impossible de jouer ce coup !", Toast.LENGTH_SHORT).show();
+                }
+
+                //Check si fini
+                if (this._plateau.check()){
+                    Log.d("testAction", "WIN");
+                    Toast.makeText(this.getContext(), "Féliciation ! Victoire ! Cliquez pour rejouer", Toast.LENGTH_SHORT).show();
+                    this._isRandomized = false; //On peut rejouer comme ça
+                }
+
             }
         }
         return true;
