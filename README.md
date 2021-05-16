@@ -1,9 +1,9 @@
-##Projet OpenGL ES 
-###Thomas Quetier & Ladislas Walcak
+## Projet OpenGL ES 
+### Thomas Quetier & Ladislas Walcak
 
 ------------
 
-####Les shapes
+#### Les shapes
 Pour gérer nos formes, nous avons d'abord une interface **Shape.java** 
 ```java
 public interface Shape {
@@ -51,7 +51,7 @@ public class Losange extends DefaultShape {
     }
 }
 ```
-####L'affichage initial du Taquin
+#### L'affichage initial du Taquin
 Maintenant, il est question d'afficher les formes de manière correct, pour créer le taquin initial correspondant à un état final (résolu) du problème. 
 Pour cela, nous commençons par ajouter dans la liste des Shapes les élements de notre taquin dans l'ordre : 
 ```java
@@ -69,7 +69,7 @@ Pour cela, nous commençons par ajouter dans la liste des Shapes les élements d
 ```
 Avec les Carrés sur la ligne du Haut (donc Y = 1.0f), les Triangles dans la ligne du milieu (Y = 0.0f) et les deux Losanges dans la ligne du bas (Y = -1.0f). Ensuite, dans le** onDrawFrame()**, la liste de Shape et parcouru et tout les élements sont dessinés. 
 Nous obtenons donc ce rendu initial : 
-[![Image lancement taquin](https://media.discordapp.net/attachments/765538966115319858/843475425626685480/IMG_20210516_150959.jpg?width=301&height=640 "Image lancement taquin")](https://media.discordapp.net/attachments/765538966115319858/843475425626685480/IMG_20210516_150959.jpg?width=301&height=640 "Image lancement taquin")
+[![Image lancement taquin](./ScreenShot/initTaquin.jpg)
 
 Pour revenir sur la position des éléments, nous utilisons un couple d'entier X,Y pour les placer. Pour les X on a : -1 a gauche, 0 au milieu & +1 a droite. Pour les Y on a : -1 en bas, 0 au milieu et +1 a droite. Ensuite, les coordonnées sont calculées dans la fonctions setPosition des elements comme suit :
 ```java
@@ -85,7 +85,7 @@ Pour revenir sur la position des éléments, nous utilisons un couple d'entier X
 ```
 L'offset choisis etant dans une variable static (7 sur l'image).
 
-####La gestion des évenements et la classe Plateau 
+#### La gestion des évenements et la classe Plateau 
 Maintenant il faut pouvoir jouer ! Pour cela deux choses. 
 - D'abord la randomisation du taquin lors du premier "clique"
 - Le déplacement de la shape selectionnées, si elle est voisine de la case vide.
@@ -97,7 +97,7 @@ Le taquin est stocké sous la forme d'une liste de liste tel que :
     private final List<List<Shape>> _plateau = new ArrayList<>();
 ```
 
-#####Randomisation 
+##### Randomisation 
 Pour la randomisation, nous partons donc du Taquin résolu et nous effectuons une série de deplacement autorisé pour garantir la résolvabilité du Taquin. 
 Voici la fonction randomize() dans la classe Plateau.java :
 ```java
@@ -132,7 +132,7 @@ Voici la fonction randomize() dans la classe Plateau.java :
 Pour avoir un semblant d'animation, nous avons choisi d'actualisé la view dans la fonction, a chaque mouvement. A noté que le nombre de mouvement pour le mélange est une variable static facilement modifiable dans la view.
 
 Aussi, nous vérifions si le taquin mélangé n'est pas final : au quel cas nous remélangeons. 
-#####Les actions du joueur
+##### Les actions du joueur
 Maintenant le jeu commence ! Nous récupérons d'abord la shape sur laquelle l'utilisateur "clique", de cette façon : 
 ```java
                 float glX = (20.0f * e.getX() / getWidth() - 10.0f) / DefaultShape.OFFSET;
@@ -182,4 +182,36 @@ Ensuite, le plateau prends le relais : on récupere la ligne et la colonne de l'
         this._null = new Couple<>(xShape, yShape);
         this.getVoisins();
     }
+```
+
+Vous pouvre trouver dans le dossier ScreenShot, une vidéo montrant une partie jouée.
+
+#### Ajout optionnel : DU SON !
+
+Nous avons décidé de faire un petit ajout optionnel, nous avons ajouté des sons à notre application. Pour ce faire, nous avons utilisé la classe fournie par Android `MediaPlayer`. Au sein de la MainActivity, nous récupérons les sons (stockés dans les Ressources), que nous insérons dans une Map. 
+```java
+        // Récupération des sons
+        Map<Integer, MediaPlayer> sounds = new HashMap<>();
+        sounds.put(Plateau.SOUND_SWIPE, MediaPlayer.create(getApplicationContext(), R.raw.swipe));
+        sounds.put(Plateau.SOUND_ERROR, MediaPlayer.create(getApplicationContext(), R.raw.error));
+        sounds.put(Plateau.SOUND_WIN, MediaPlayer.create(getApplicationContext(), R.raw.victory));
+```
+Cette Map est ensuite transmisse à la classe plateau, qui joue les sons lors que cela est nécessaire.  
+Extrait de la méthode Play():  
+```java
+            // Échange des deux pièces + son
+            this.swap(converted.getX(), converted.getY(), this._null.getX(), this._null.getY());
+            Objects.requireNonNull(this._sounds.get(SOUND_SWIPE)).start();
+```
+...
+```java
+        // Si la pièce n'est pas un voisin, le coup est invalide
+        Objects.requireNonNull(this._sounds.get(SOUND_ERROR)).start();
+        return false;
+```
+Extrait de la méthode check():
+```java
+        // Si tout est bon, son
+        Objects.requireNonNull(this._sounds.get(SOUND_WIN)).start();
+        return true;
 ```
