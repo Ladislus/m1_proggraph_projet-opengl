@@ -36,8 +36,8 @@ public class Plateau {
     }
 
     private Couple<Integer> glToIndices(float x, float y) {
-        int indexX = (int) (x + 1);
-        int indexY = (int) (1 - y);
+        int indexY = (int) (x + 1);
+        int indexX = (int) (1 - y);
 
         assert indexX >= 0 && indexX <= 2;
         assert indexY >= 0 && indexY <= 2;
@@ -50,8 +50,8 @@ public class Plateau {
     }
 
     private Couple<Float> indicesToGL(int x, int y) {
-        int glX = x - 1;
-        int glY = 1 - y;
+        int glX = -1 + y;
+        int glY = 1 - x;
 
         assert glX >= -1 && glX <= 1;
         assert glY >= -1 && glY <= 1;
@@ -85,13 +85,13 @@ public class Plateau {
         assert (x <= 2 && x >= 0);
         assert (y <= 2 && y >= 0);
 
-        if (Objects.isNull(this._plateau.get(y).get(x))) return Optional.empty();
-        return Optional.of(this._plateau.get(y).get(x));
+        if (Objects.isNull(this._plateau.get(x).get(y))) return Optional.empty();
+        return Optional.of(this._plateau.get(x).get(y));
     }
 
     private Optional<Shape> setShape(int x, int y, Shape shape) {
         Optional<Shape> previous = this.getShape(x, y);
-        this._plateau.get(y).set(x, shape);
+        this._plateau.get(x).set(y, shape);
         return previous;
     }
 
