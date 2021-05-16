@@ -48,7 +48,6 @@ public class GLView extends GLSurfaceView {
 
                 requestRender();
             } else {
-
                 Log.d("OpenGL", "Coup !");
                 // Conversion des coordonnées pixel en coordonnées OpenGL
                 // Attention l'axe x est inversé par rapport à OpenGLSL
@@ -57,41 +56,14 @@ public class GLView extends GLSurfaceView {
                 float glY = (-20.0f * e.getY() / getHeight() + 10.0f) / DefaultShape.OFFSET;
 
                 //Définition des plages de cellules
-                boolean XGauche = (glX <= -0.75f && glX >= -1.25f);
-                boolean XMilieu = (glX <= 0.25f && glX >= -0.25f);
-                boolean XDroite = (glX <= 1.25f && glX >= 0.75f);
+                boolean leftX = (glX <= -0.75f && glX >= -1.25f);
+                boolean rightX = (glX <= 1.25f && glX >= 0.75f);
 
-                boolean YHaut = (glY <= 0.75f && glY >= 0.25f);
-                boolean YMilieu = (glY <= 0.20f && glY >= -0.20f);
-                boolean YBas = (glY <= -0.25f && glY >= -0.75f);
+                boolean topY = (glY <= 0.75f && glY >= 0.25f);
+                boolean bottomY = (glY <= -0.25f && glY >= -0.75f);
 
-                //Calcul des valeurs booleans
-                boolean inHautGauche = XGauche && YHaut;
-                boolean inHautMilieu = XMilieu && YHaut;
-                boolean inHautDroite = XDroite && YHaut;
-
-                boolean inMilieuGauche = XGauche && YMilieu;
-                boolean inMilieuMilieu = XMilieu && YMilieu;
-                boolean inMilieuDroite = XDroite && YMilieu;
-
-                boolean inBasGauche = XGauche && YBas;
-                boolean inBasMilieu = XMilieu && YBas;
-                boolean inBasDroite = XDroite && YBas;
-
-                Log.d("testAction", "Test click  : \n"
-                        +"hautGauche : "+inHautGauche+"\n"
-                        +"hautMilieu : "+inHautMilieu+"\n"
-                        +"hautDroite : "+inHautDroite+"\n"
-                        +"inMilieuGauche : "+inMilieuGauche+"\n"
-                        +"inMilieuMilieu : "+inMilieuMilieu+"\n"
-                        +"inMilieuDroite : "+inMilieuDroite+"\n"
-                        +"inBasGauche : "+inBasGauche+"\n"
-                        +"inBasMilieu : "+inBasMilieu+"\n"
-                        +"inBasDroite : "+inBasDroite+"\n"
-                );
-
-                int posX = (XGauche) ? -1 : (XDroite) ? 1 : 0;
-                int posY = (YHaut) ? 1 : (YBas) ? - 1 : 0;
+                int posX = (leftX) ? -1 : (rightX) ? 1 : 0;
+                int posY = (topY) ? 1 : (bottomY) ? - 1 : 0;
                 boolean played = this._plateau.play(posX, posY);
                 if (!played) Toast.makeText(this.getContext(), "Impossible de jouer ce coup !", Toast.LENGTH_SHORT).show();
                 else if (this._plateau.check()) {
