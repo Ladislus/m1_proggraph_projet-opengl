@@ -7,4 +7,7 @@ public interface Shape {
 
     Couple<Float> getPosition();
     void setPosition(Couple<Float> position);
+
+    Family getFamily();
+    Color getColor();
 }

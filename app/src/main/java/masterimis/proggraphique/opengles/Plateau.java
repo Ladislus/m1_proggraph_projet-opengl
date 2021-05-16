@@ -1,11 +1,15 @@
 package masterimis.proggraphique.opengles;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
+import masterimis.proggraphique.opengles.Shapes.Color;
+import masterimis.proggraphique.opengles.Shapes.Family;
 import masterimis.proggraphique.opengles.Shapes.Shape;
 import masterimis.proggraphique.opengles.Utils.Couple;
 
@@ -17,6 +21,7 @@ public class Plateau {
     private static final Random _random = new Random();
 
     private final List<List<Shape>> _plateau = new ArrayList<>();
+    private final List<List<Pair<Family, Color>>> _correct = new ArrayList<>();
     private final List<Shape> _voisins = new ArrayList<>();
 
     private Couple<Integer> _null = new Couple<>(2, 2);
@@ -66,15 +71,13 @@ public class Plateau {
         this._plateau.clear();
 
         for (int i = 0; i < SIZE; i++) {
-            List<Shape> ligne = new ArrayList<>();
-            ligne.add(shapes.get(i * SIZE));
-            ligne.add(shapes.get(i * SIZE + 1));
-            if ((i * SIZE + 2 >= 8)) ligne.add(null);
-            else ligne.add(shapes.get(i * SIZE + 2));
+            List<Shape> line = new ArrayList<>();
+            line.add(shapes.get(i * SIZE));
+            line.add(shapes.get(i * SIZE + 1));
+            line.add((i * SIZE + 2 >= 8) ? null : shapes.get(i * SIZE + 2));
 
-            this._plateau.add(ligne);
+            this._plateau.add(line);
         }
-
         this.getVoisins();
     }
 
@@ -108,7 +111,16 @@ public class Plateau {
     }
 
     public void randomize(int rounds) {
+
+        // Récupération de la matrice de jeu
         this.updateContent(this._renderer.getShapes());
+
+        // Construction matrice attendue
+        for (List<Shape> subList : this._plateau) {
+            List<Pair<Family, Color>> line = new ArrayList<>();
+            for (Shape shape : subList) line.add(Objects.isNull(shape) ? null : new Pair<>(shape.getFamily(), shape.getColor()));
+            this._correct.add(line);
+        }
 
         for (int i = 0; i < rounds; i++){
             int randomIndex = _random.nextInt(this._voisins.size());
@@ -124,5 +136,17 @@ public class Plateau {
                 e.printStackTrace();
             }
         }
+    }
+
+    public boolean check() {
+        for (int line = 0; line < this._plateau.size(); line++)
+            for (int column = 0; column < this._plateau.get(line).size(); column++) {
+                Shape shape = this._plateau.get(line).get(column);
+                Pair<Family, Color> correct = this._correct.get(line).get(column);
+
+                if ((Objects.isNull(shape) && !Objects.isNull(correct)) || (!Objects.isNull(shape) && Objects.isNull(correct))) return false;
+                if (!shape.getColor().equals(correct.second) || !shape.getFamily().equals(correct.first)) return false;
+            }
+        return true;
     }
 }

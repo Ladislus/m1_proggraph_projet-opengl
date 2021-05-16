@@ -13,7 +13,7 @@ public class Square extends DefaultShape {
     private static final short[] SQUARE_INDICES = { 0, 1, 2, 0, 2, 3 };
 
     public Square(Couple<Float> position, Color color) {
-        super(position, color, SQUARE_INITIALS, SQUARE_INDICES);
+        super(position, color, Family.SQUARE, SQUARE_INITIALS, SQUARE_INDICES);
     }
 
     @Override

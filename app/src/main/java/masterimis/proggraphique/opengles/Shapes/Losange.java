@@ -13,7 +13,7 @@ public class Losange extends DefaultShape {
     private static final short[] LOSANGE_INDICES = { 0, 1, 2, 0, 2, 3};
 
     public Losange(Couple<Float> position, Color color) {
-        super(position, color, LOSANGE_INITIALS, LOSANGE_INDICES);
+        super(position, color, Family.LOSANGE, LOSANGE_INITIALS, LOSANGE_INDICES);
     }
 
     @Override

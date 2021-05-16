@@ -12,7 +12,7 @@ public class Triangle extends DefaultShape {
     private static final short[] TRIANGLE_INDICES = { 0, 1, 2};
 
     public Triangle(Couple<Float> position, Color color) {
-        super(position, color, TRIANGLE_INITIALS, TRIANGLE_INDICES);
+        super(position, color, Family.TRIANGLE, TRIANGLE_INITIALS, TRIANGLE_INDICES);
     }
 
     @Override

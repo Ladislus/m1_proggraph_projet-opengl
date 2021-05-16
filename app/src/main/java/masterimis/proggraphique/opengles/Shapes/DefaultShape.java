@@ -30,18 +30,24 @@ public abstract class DefaultShape implements Shape {
 
     protected final Couple<Float> _position = new Couple<>( 0.0f, 0.0f );
 
+    protected final Color _colorType;
+    protected final Family _shapeType;
+
     protected final short[] _indices;
     protected final float[] _initials;
     protected float[] _coordinates;
     protected float[] _colors;
 
-    public DefaultShape(Couple<Float> position, Color color, float[] initials, short[] indices) {
+    public DefaultShape(Couple<Float> position, Color color, Family family, float[] initials, short[] indices) {
 
         this._initials = initials;
         this._coordinates = new float[initials.length];
         System.arraycopy(initials, 0, this._coordinates, 0, initials.length);
         this._indices = indices;
         this.setPosition(position);
+
+        this._colorType = color;
+        this._shapeType = family;
 
         // initialisation du buffer pour les vertex (4 bytes par float)
         ByteBuffer bb = ByteBuffer.allocateDirect(this._coordinates.length * 4);
@@ -108,6 +114,16 @@ public abstract class DefaultShape implements Shape {
             this._coordinates[i] = _initials[i] + (OFFSET * position.getX());
             this._coordinates[i + 1] = _initials[i + 1] + (OFFSET * position.getY());
         }
+    }
+
+    @Override
+    public Family getFamily() {
+        return this._shapeType;
+    }
+
+    @Override
+    public Color getColor() {
+        return this._colorType;
     }
 
     abstract protected void initColors(Color color);

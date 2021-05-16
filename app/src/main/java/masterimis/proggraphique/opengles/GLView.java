@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2011 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package masterimis.proggraphique.opengles;
 
 import android.content.Context;
@@ -23,97 +7,54 @@ import android.view.MotionEvent;
 
 public class GLView extends GLSurfaceView {
 
-    /* Un attribut : le renderer (GLSurfaceView.Renderer est une interface générique disponible) */
-    /* MyGLRenderer va implémenter les méthodes de cette interface */
-
     private static final int RANDOMIZE_ROUNDS = 200;
 
     private final GLRenderer _renderer;
-    private Plateau _plateau;
+    private final Plateau _plateau;
     private boolean _isRandomized = false;
 
     public GLView(Context context) {
         super(context);
         setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-        // Création d'un context OpenGLES 2.0
         setEGLContextClientVersion(3);
 
         // Création du renderer qui va être lié au conteneur View créé
         this._renderer = new GLRenderer();
-        setRenderer(_renderer);
+        setRenderer(this._renderer);
+
         // Option pour indiquer qu'on redessine uniquement si les données changent
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+
+        // Création du plateau de jeu
         this._plateau = new Plateau(this._renderer, this);
     }
 
-    /* pour gérer la translation */
-    private float mPreviousX;
-    private float mPreviousY;
-    private boolean condition = false;
 
-    /* Comment interpréter les événements sur l'écran tactile */
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        // Les coordonnées du point touché sur l'écran
-        float x = e.getX();
-        float y = e.getY();
 
-        // la taille de l'écran en pixels
-        float screen_x = getWidth();
-        float screen_y = getHeight();
-
-        // Des messages si nécessaires */
-        Log.d("message", "x"+Float.toString(x));
-        Log.d("message", "y"+Float.toString(y));
-        Log.d("message", "screen_x="+Float.toString(screen_x));
-        Log.d("message", "screen_y="+Float.toString(screen_y));
-
-
-        /* accès aux paramètres du rendu (cf MyGLRenderer.java)
-        soit la position courante du centre du carré
-         */
-        float[] pos = this._renderer.getPosition();
-
-        /* Conversion des coordonnées pixel en coordonnées OpenGL
-        Attention l'axe x est inversé par rapport à OpenGLSL
-        On suppose que l'écran correspond à un carré d'arête 2 centré en 0
-         */
-
-        float x_opengl = 20.0f*x/getWidth() - 10.0f;
-        float y_opengl = -20.0f*y/getHeight() + 10.0f;
-
-        Log.d("message","x_opengl="+Float.toString(x_opengl));
-        Log.d("message","y_opengl="+Float.toString(y_opengl));
-
-        /* Le carré représenté a une arête de 2 (oui il va falloir changer cette valeur en dur !!)
-        /* On teste si le point touché appartient au carré ou pas car on ne doit le déplacer que si ce point est dans le carré
-        */
-//       boolean test_square = ((x_opengl < pos[0]+1.0) && (x_opengl > pos[0]-1.0) && (y_opengl < pos[1]+1.0) && (y_opengl > pos[1]-1.0));
-
-//        Log.d("message","test_square="+Boolean.toString(test_square));
-//        Log.d("message","condition="+Boolean.toString(condition));
-
-        if(!this._isRandomized){
-            switch (e.getAction()) {
-            /* Lorsqu'on touche l'écran on mémorise juste le point */
-            case MotionEvent.ACTION_UP:
+        if (e.getAction() == MotionEvent.ACTION_UP) {
+            // Premier clique, mélange le plateau
+            if (!this._isRandomized) {
                 this._plateau.randomize(RANDOMIZE_ROUNDS);
                 this._isRandomized = true;
-                requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
+                requestRender();
+                // TODO : Win
+                if (this._plateau.check()) Log.d("OpenGL", "WIN");
+            // TODO Jouer un coup
+            } else {
+                Log.d("OpenGL", "Coup !");
+//                // Conversion des coordonnées pixel en coordonnées OpenGL
+//                // Attention l'axe x est inversé par rapport à OpenGLSL
+//                // On suppose que l'écran correspond à un carré d'arête 2 centré en 0
+//                float glX = 20.0f * e.getX() / getWidth() - 10.0f;
+//                float glY = -20.0f * e.getY() / getHeight() + 10.0f;
+//
+//                // TODO Récupération de l'object cliqué
+//                Couple<Float> position = this._renderer.getPosition();
+//                boolean test_square = ((glX < position.getX() + 1.0f) && (glX > position.getX() - 1.0f) && (glY < position.getY() + 1.0f) && (glY > position.getY() - 1.0f));
             }
         }
-//        switch (e.getAction()) {
-//            /* Lorsqu'on touche l'écran on mémorise juste le point */
-//            case MotionEvent.ACTION_DOWN:
-//                mPreviousX = x;
-//                mPreviousY = y;
-//                condition=true;
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                mRenderer.setPosition(0.0f,-9.0f);
-//                requestRender(); // équivalent de glutPostRedisplay pour lancer le dessin avec les modifications.
-//                condition=false;
-//            }
         return true;
     }
 
